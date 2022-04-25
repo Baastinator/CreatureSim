@@ -7,6 +7,7 @@ function GUI(height,res)
 	end
 	
 	local gui = Grid()
+	gui.type = "grid.gui"
 
 	local pause = function(g)
 		for i=0,7 do
@@ -25,7 +26,9 @@ function GUI(height,res)
 	gui.fill(2,2,res.x-3,height-3,0)
 	pause(gui)
 
-	PlaceNum(gui,height/2+20,height/2-3,1)
+	for i=0,9 do
+		PlaceNum(gui,height/2+20+18*i,height/2-6,i)
+	end
 
 	return setmetatable(gui,{
 		__index = {

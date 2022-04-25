@@ -24,6 +24,13 @@ function Grid()
     end
 
     local function fill(X,Y,W,H,L)
+        do --input validation
+            if (type(X) ~= "number") then error("input #1 needs to be a number",2) end
+            if (type(Y) ~= "number") then error("input #2 needs to be a number",2) end
+            if (type(W) ~= "number") then error("input #3 needs to be a number",2) end
+            if (type(H) ~= "number") then error("input #4 needs to be a number",2) end
+            if (type(L) ~= "number") then error("input #5 needs to be a number",2) end
+        end
         for y=1,H do
             for x=1,W do
                 SetlightLevel(X+x-1,Y+y-1,L)

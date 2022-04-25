@@ -8,6 +8,9 @@ function Draw()
     end
 
     local function drawFromArray1D(x, y, T, Grid)
+        if (type(x) ~= "number") then error("input #1 needs to be a number",2) end
+        if (type(y) ~= "number") then error("input #2 needs to be a number",2) end
+        if not (type(Grid) == "table" and Grid.type:match("grid") == "grid") then error("input #3 needs to be a table of type grid",2) end
         local P = {}
         local Pit = 0
         P.currLightLevel = nil
@@ -41,7 +44,9 @@ function Draw()
     end
 
     local function drawFromArray2D(x, y, Grid) -- Draws Grid onto screen at specified location
-
+        if (type(x) ~= "number") then error("input #1 needs to be a number",2) end
+        if (type(y) ~= "number") then error("input #2 needs to be a number",2) end
+        if not (type(Grid) == "table" and Grid.type:match("grid") == "grid") then error("input #3 needs to be a table of type grid",2) end
         local oT = {} 
         for i, v in ipairs(Grid.grid) do
             oT[i] = drawFromArray1D(x-1,y+i-1,v, Grid)
@@ -49,19 +54,9 @@ function Draw()
         -- debugLog(oT,"DFA2D")
     end
 
-    local function f(x)
-        return
-        x
-        -- math.floor((-480*(0.83^(x+3.08)))+271)
-    end
-
-    local function rgb(x)
-        return 255^2/x
-    end
-
     local function setPalette()
         for i=0,255 do
-            term.setPaletteColor(i, colors.packRGB(f(i)/255,f(i)/255,f(i)/255))
+            term.setPaletteColor(i, colors.packRGB(i/255,i/255,i/255))
         end
     end
 
