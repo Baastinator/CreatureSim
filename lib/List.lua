@@ -1,9 +1,6 @@
----@diagnostic disable: undefined-field
-
-
 local function add(a,Element)
     table.insert(a,Element)
-    return table.getn(a)
+    return #a
 end
 
 local function get(a,index)
@@ -18,7 +15,7 @@ end
 
 local function remove(a,index)
     if #a < index then error(Type.." List remove: Outside range",2) end
-    for i=index,table.getn(a) do
+    for i=index,#a do
         a[i] = a[i+1] or nil
     end
 end

@@ -1,5 +1,5 @@
 ---@diagnostic disable: deprecated, lowercase-global
-local mathb = import("mathb")
+import("mathb")
 
 local matrix = {
     identity = function(size)
@@ -19,7 +19,7 @@ local matrix = {
                 str = str.."\n"
             end
             for x=1,size.x do
-                local val = mathb.round(a:get(x,y),5)
+                local val = Mathb.round(a:get(x,y),5)
                 local placeholder = ""
                 for i=#tostring(val),8 do
                     placeholder = placeholder.." "
@@ -222,7 +222,7 @@ local matrix = {
         if (math.floor(it) ~= it or it <= 0) then error("bad iteration count",2) end
         local sum = mat().identity(a.xSize)
         for i=1,it do
-            local part = ((1/mathb.factorial(i)) * a:pow(i))
+            local part = ((1/Mathb.factorial(i)) * a:pow(i))
             sum = sum + part
         end
         return sum
