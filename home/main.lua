@@ -21,6 +21,7 @@ local tres = {}
 
 local debugMode = false
 local gameLoop = true
+local paused = false
 local framesElapsed = 0
 
 local ui = {
@@ -34,9 +35,14 @@ local function userInput()
     while true do
 ---@diagnostic disable-next-line: undefined-field
         event, key, is_held = os.pullEvent("key")
+        
         if key == keys.space then
+            paused = not paused
+            if paused then gui:pause() end
+        elseif key == keys.right then
             gameLoop = false
         end
+        
         key = nil
     end
 end
@@ -67,6 +73,7 @@ local function PreUpdate()
 end
 
 local function Update()
+    gui:tick()
 end
  
 local function Render()
@@ -90,12 +97,14 @@ local function main()
     Init()
     Start()
     while gameLoop do
+        if not paused then
         PreUpdate()
         Update()
         Render()
+        framesElapsed = framesElapsed + 1;
+        end
         os.queueEvent("")
         os.pullEvent("")
-        framesElapsed = framesElapsed + 1;
     end
     Closing()
 end

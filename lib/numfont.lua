@@ -1,8 +1,11 @@
 function PlaceNum(g,x,y,n)
-	if not (type(g) == "table" and g.type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
-	if (type(x) ~= "number") then error("input #2 needs to be a number",2) end
-	if (type(y) ~= "number") then error("input #3 needs to be a number",2) end
-	if (type(n) ~= "number") then error("input #4 needs to be a number",2) end
+	do --input validation
+		if not (type(g) == "table" and g.type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
+		if (type(x) ~= "number") then error("input #2 needs to be a number",2) end
+		if (type(y) ~= "number") then error("input #3 needs to be a number",2) end
+		if (type(n) ~= "number") then error("input #4 needs to be a number",2) end
+		if (n > 9 or n < 0) then error("input #4 needs to be non-negative integer below 10",2) end
+	end
 	local function Zero(g,x,y)
 		g.fill(x,y+4,4,6,1)
 		g.fill(x+2,y+10,2,2,1)
@@ -89,6 +92,7 @@ function PlaceNum(g,x,y,n)
 		g.fill(x+10,y+8,4,4,1)
 		g.fill(x+2,y+12,10,2,1)
 	end
+	g.fill(x,y,14,14,0)
 	if(n == 1) then
 		One(g,x,y)
 	elseif(n==2) then
@@ -112,3 +116,16 @@ function PlaceNum(g,x,y,n)
 	end
 end
 
+function PlaceNums(g,x,y,n)
+	do --input validation
+		if not (type(g) == "table" and g.type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
+		if (type(x) ~= "number") then error("input #2 needs to be a number",2) end
+		if (type(y) ~= "number") then error("input #3 needs to be a number",2) end
+	end
+	local nStr = n..""
+	local nChaT = {}
+	local nStr = nStr:gsub(".",function (a) table.insert(nChaT,a) end)
+	for i, v in ipairs(nChaT) do
+		PlaceNum(g,x+18*i-#nChaT*18,y,tonumber(v))
+	end
+end
