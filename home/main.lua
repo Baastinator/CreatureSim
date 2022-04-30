@@ -9,7 +9,7 @@ import("tblclean")
 import("grid")
 import("draw")
 import("GUI")
--- import("creature")
+import("creature")
 
 -- globals
 
@@ -20,7 +20,7 @@ local gui
 local res = {}
 local tres = {}
 
-local debugMode = false
+local debugMode = true
 local gameLoop = true
 local paused = false
 local framesElapsed = 0
@@ -66,6 +66,7 @@ local function Init()
     Grid.init(res.x,res.y-ui.height)
     gui = GUI(50,res)
     term.clear()
+    term.setCursorPos(1,1)
     term.setGraphicsMode(2)
     draw.setPalette()
     term.drawPixels(0,0,0,tres.x,tres.y)
@@ -79,12 +80,15 @@ end
 local function PreUpdate() 
 end
 
+
 local function Update()
-    creatures:get(1):move(Grid,1,1)
+    if (framesElapsed % 150 == 0) then
+        creatures:get(1):move(Grid,1,1)
+    end     
 end
 
 local function Render()
-    local fps = math.floor(100/(ccemux.milliTime()-oldtime))
+    local fps = math.floor(1000/(ccemux.milliTime()-oldtime))
     if (fps ~= math.huge) then
         gui:displayNum(fps)
     end
@@ -110,7 +114,7 @@ local function main()
     Start()
     while gameLoop do
         if not paused then
-        -- PreUpdate()
+        PreUpdate()
         Update()
         Render()
         framesElapsed = framesElapsed + 1;
@@ -125,4 +129,4 @@ end
 
 local ok, err = pcall(parallel.waitForAny,main,userInput)
 if not ok then Closing() end
-printError(err)
+if err ~= 1 then printError(err) end
