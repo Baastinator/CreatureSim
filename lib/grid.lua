@@ -1,6 +1,7 @@
 function Grid()
     local grid = {}
     local res = {}
+    local Type = "grid"
 
     local function init(X, Y)
         res.x = X
@@ -14,12 +15,16 @@ function Grid()
     end
 
     local function GetlightLevel(X,Y)
-        return grid[Y][X].lightLevel
+        return grid[Y][X]
     end
 
     local function SetlightLevel(X,Y,Value)
         if (X > 0 and Y > 0 and Y < res.y and X < res.x) then
-            grid[res.y-Y][X] = Value
+            if Type == "grid" then
+                grid[Y][X] = Value
+            else
+                grid[res.y-Y][X] = Value
+            end
         end
     end
 
@@ -48,8 +53,8 @@ function Grid()
 
     return {
         fullFill = fullFill,
-        type = "grid",
         fill = fill,
+        type = Type,
         GetlightLevel = GetlightLevel,
         SetlightLevel = SetlightLevel,
         grid = grid,

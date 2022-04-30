@@ -2,9 +2,19 @@
 function Draw()
     local PixelSize = 1 --KEEP AT 2
 
-    local function lightLevelToCol(D, LinMode)
+    local function lightLevelToCol(D)
+        -- [0-1] => black-white spectrum
+        -- 2 => wall (255)
+        -- 3 => creature (254)
         if (type(D) ~= "number") then error("first input needs to be number",2) end
-        return D*255
+        if (D < 0) then error("first input needs to be positive",2) end
+        if (D <= 1) then
+            return math.floor(D*253)
+        elseif (D == 2) then
+            return 255
+        elseif (D == 3) then
+            return 254
+        end
     end
 
     local function drawFromArray1D(x, y, T, Grid)
@@ -15,30 +25,31 @@ function Draw()
         local Pit = 0
         P.currLightLevel = nil
         for i,v in ipairs(T) do
-            if lightLevelToCol(v,true) == P.currLightLevel then
-            if P[Pit][2] == nil then
-                P[Pit][2] = 1
-            end
+            if lightLevelToCol(v) == P.currLightLevel then
+                if P[Pit][2] == nil then
+                    P[Pit][2] = 1
+                end
             P[Pit][2] = P[Pit][2] + 1
-
             else
                 Pit = Pit + 1 
-                P.currLightLevel = lightLevelToCol(v,true)
+                P.currLightLevel = lightLevelToCol(v)
                 P[Pit] = {}
                 P[Pit][1] = i
                 P[Pit][2] = 1
-                P[Pit].col = P.currLightLevel
+                P[Pit][3] = P.currLightLevel
             end
         end
         P.currLightLevel = nil
-        for i,v in ipairs(P) do
-            term.drawPixels(
-                (x+v[1])*PixelSize,
-                y*PixelSize,
-                v.col,
-                PixelSize*(v[2]),
-                PixelSize
-            )
+        if not (P[1][1] == 1 and P[1][2] == 954 and P[1][3] == 0) then
+            for i,v in ipairs(P) do
+                term.drawPixels(
+                    (x+v[1])*PixelSize,
+                    y*PixelSize,
+                    v[3],
+                    PixelSize*(v[2]),
+                    PixelSize
+                )
+            end
         end
         return P
     end
@@ -51,13 +62,17 @@ function Draw()
         for i, v in ipairs(Grid.grid) do
             oT[i] = drawFromArray1D(x-1,y+i-1,v, Grid)
         end
-        -- debugLog(oT,"DFA2D")
     end
 
     local function setPalette()
-        for i=0,255 do
+        -- 0 - 253 plain gray
+        for i=0,254 do
             term.setPaletteColor(i, colors.packRGB(i/255,i/255,i/255))
         end
+        -- 254 creature
+        term.setPaletteColor(254, colors.packRGB(0.75,0,0.75))
+        -- 255 food
+        term.setPaletteColor(255, colors.packRGB(0,0.5,0))
     end
 
     local function resetPalette()
@@ -68,6 +83,7 @@ function Draw()
     end
 
     return {
+        type="draw",
         lightLevelToCol = lightLevelToCol,
         PixelSize = PixelSize,
         drawFromArray1D = drawFromArray1D,

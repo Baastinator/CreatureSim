@@ -20,24 +20,22 @@ function GUI(height,res)
 		g.fill(height/2+5,height/2-7,5,16,1)
 	end	
 	
-	local Tick = function (g)
-		g.tickCount = g.tickCount + 1
-		PlaceNums(g,res.x-(height/2+6),height/2-6,g.tickCount.."")
+	local displayNum = function (g, n)
+		PlaceNums(g,res.x-(height/2+6),height/2-6,n.."")
 	end
 	
 	local gui = Grid()
-	gui.type = "grid.gui"
-	gui.tickCount = 0
+	gui.Type = "grid.gui"
 	gui.init(res.x,height)
 	gui.fill(1,1,res.x,height,1)
 	gui.fill(2,2,res.x-3,height-3,0)
-	unpause(gui)
+	-- unpause(gui)
 
 	return setmetatable(gui,{
 		__index = {
 			pause=pause,
 			unpause=unpause,
-			tick = Tick
+			displayNum = displayNum
 		}	
 	})
 end

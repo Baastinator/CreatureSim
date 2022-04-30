@@ -1,9 +1,9 @@
 function PlaceNum(g,x,y,n)
 	do --input validation
-		if not (type(g) == "table" and g.type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
+		if not (type(g) == "table" and g.Type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
 		if (type(x) ~= "number") then error("input #2 needs to be a number",2) end
 		if (type(y) ~= "number") then error("input #3 needs to be a number",2) end
-		if (type(n) ~= "number") then error("input #4 needs to be a number",2) end
+		if (type(n) ~= "number") then debugLog(type(n),"Placenum.4.notNum") error("input #4 needs to be a number",2) end
 		if (n > 9 or n < 0) then error("input #4 needs to be non-negative integer below 10",2) end
 	end
 	local function Zero(g,x,y)
@@ -118,13 +118,14 @@ end
 
 function PlaceNums(g,x,y,n)
 	do --input validation
-		if not (type(g) == "table" and g.type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
+		if not (type(g) == "table" and g.Type == "grid.gui") then error("input #1 needs to be a table of type grid.gui",2) end
 		if (type(x) ~= "number") then error("input #2 needs to be a number",2) end
 		if (type(y) ~= "number") then error("input #3 needs to be a number",2) end
+		if not (type(n) == "number" or type(n) == "string") then error("input #4 needs to be a number or a string",2) end
 	end
-	local nStr = n..""
+	local nBStr = n..""
 	local nChaT = {}
-	local nStr = nStr:gsub(".",function (a) table.insert(nChaT,a) end)
+	local nStr = nBStr:gsub(".",function (a) table.insert(nChaT,a) end)
 	for i, v in ipairs(nChaT) do
 		PlaceNum(g,x+18*i-#nChaT*18,y,tonumber(v))
 	end

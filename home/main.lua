@@ -9,6 +9,7 @@ import("tblclean")
 import("grid")
 import("draw")
 import("GUI")
+-- import("creature")
 
 -- globals
 
@@ -23,6 +24,11 @@ local debugMode = false
 local gameLoop = true
 local paused = false
 local framesElapsed = 0
+local creatures = List("creature")
+
+local tsum = 0
+local nsum = 0
+local oldtime = 0
 
 local ui = {
     height = 50
@@ -48,6 +54,7 @@ local function userInput()
 end
 
 local function setVertices()
+    creatures:add(Creature(30,20,Grid,0))
 end
 
 -- main functions
@@ -66,17 +73,22 @@ end
 
 local function Start()
     setVertices()
+    oldtime = ccemux.milliTime()
 end
 
 local function PreUpdate() 
-    Grid.init(res.x,res.y-ui.height)
 end
 
 local function Update()
-    gui:tick()
+    creatures:get(1):move(Grid,1,1)
 end
- 
+
 local function Render()
+    local fps = math.floor(100/(ccemux.milliTime()-oldtime))
+    if (fps ~= math.huge) then
+        gui:displayNum(fps)
+    end
+    oldtime = ccemux.milliTime()
     draw.drawFromArray2D(0,0,Grid)
     draw.drawFromArray2D(0,res.y-ui.height+1,gui)
 end
@@ -98,7 +110,7 @@ local function main()
     Start()
     while gameLoop do
         if not paused then
-        PreUpdate()
+        -- PreUpdate()
         Update()
         Render()
         framesElapsed = framesElapsed + 1;

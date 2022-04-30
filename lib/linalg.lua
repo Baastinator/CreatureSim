@@ -1,5 +1,12 @@
 ---@diagnostic disable: deprecated, lowercase-global
-import("mathb")
+local round = function(number, digits)
+    digits = digits or 0
+    number = number * (10^digits)
+    number = number + 0.5
+    number = math.floor(number)
+    number = number / (10^digits)
+    return number
+end
 
 local matrix = {
     identity = function(size)
@@ -19,7 +26,7 @@ local matrix = {
                 str = str.."\n"
             end
             for x=1,size.x do
-                local val = Mathb.round(a:get(x,y),5)
+                local val = round(a:get(x,y),5)
                 local placeholder = ""
                 for i=#tostring(val),8 do
                     placeholder = placeholder.." "

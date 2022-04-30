@@ -1,4 +1,13 @@
 Mathb = {
+    factorial = function( a ) 
+        if (math.floor(a) ~= a or a < 0) then error("factorial: bad input",2) end
+        if (a == 0) then return 1 end
+        local output = 1
+        for i=1,a do
+            output = output * i
+        end
+        return output
+    end,
     round = function(number, digits)
         digits = digits or 0
         number = number * (10^digits)

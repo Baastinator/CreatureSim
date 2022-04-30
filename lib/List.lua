@@ -29,7 +29,7 @@ end
 function List(type)
     Type = type
     return setmetatable({
-        type = Type,
+        type = "list."..Type,
     },{
         __index = {
             clear = clear,
