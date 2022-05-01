@@ -76,13 +76,13 @@ local matrix = {
     end,
     multiply = function (self,b)
         if (type(self) == "table" and type(b) == "number") or (type(self) == "number" and type(b) == "table") then
-            local self, B
+            local A, B
             if (type(self) == table) then
                 if (self.type ~= "mat") then error("bad types",2) end
-                self = self
+                A = self
                 B = b
             else
-                self = b
+                A = b
                 B = self
             end
             local size = self:getSize()

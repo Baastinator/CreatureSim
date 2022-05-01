@@ -6,19 +6,9 @@ function PlaceNum(g,x,y,n)
 		if (type(n) ~= "number") then debugLog(type(n),"Placenum.4.notNum") error("input #4 needs to be a number",2) end
 		if (n > 9 or n < 0) then error("input #4 needs to be non-negative integer below 10",2) end
 	end
-	local function Zero(g,x,y)
-		g.fill(x,y+4,4,6,1)
-		g.fill(x+2,y+10,2,2,1)
-		g.fill(x+4,y+12,6,2,1)
-		g.fill(x+8,y+10,4,2,1)
-		g.fill(x+10,y+4,4,6,1)
-		g.fill(x+10,y+2,2,2,1)
-		g.fill(x+2,y+2,4,2,1)
-		g.fill(x+4,y,6,2,1)
-	end
 	local function One(g,x,y)
-		g.fill(x+2,y,12,2,1)
-		g.fill(x+6,y+2,4,12,1)
+		g.fill(x+2,y+12,12,2,1)
+		g.fill(x+6,y+10,4,12,1)
 		g.fill(x+4,y+10,2,2,1)
 	end
 	local function Two(g,x,y)
@@ -91,6 +81,16 @@ function PlaceNum(g,x,y,n)
 		g.fill(x+0,y+8,4,4,1)
 		g.fill(x+10,y+8,4,4,1)
 		g.fill(x+2,y+12,10,2,1)
+	end
+	local function Zero(g,x,y)
+		g.fill(x,y+4,4,6,1)
+		g.fill(x+2,y+10,2,2,1)
+		g.fill(x+4,y+12,6,2,1)
+		g.fill(x+8,y+10,4,2,1)
+		g.fill(x+10,y+4,4,6,1)
+		g.fill(x+10,y+2,2,2,1)
+		g.fill(x+2,y+2,4,2,1)
+		g.fill(x+4,y,6,2,1)
 	end
 	g.fill(x,y,14,14,0)
 	if(n == 1) then

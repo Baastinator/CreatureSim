@@ -20,11 +20,7 @@ function Grid()
 
     local function SetlightLevel(X,Y,Value)
         if (X > 0 and Y > 0 and Y < res.y and X < res.x) then
-            if Type == "grid" then
                 grid[Y][X] = Value
-            else
-                grid[res.y-Y][X] = Value
-            end
         end
     end
 
@@ -54,7 +50,8 @@ function Grid()
     return {
         fullFill = fullFill,
         fill = fill,
-        type = Type,
+        res = res,
+        Type = Type,
         GetlightLevel = GetlightLevel,
         SetlightLevel = SetlightLevel,
         grid = grid,

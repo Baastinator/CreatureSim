@@ -20,7 +20,7 @@ function Draw()
     local function drawFromArray1D(x, y, T, Grid)
         if (type(x) ~= "number") then error("input #1 needs to be a number",2) end
         if (type(y) ~= "number") then error("input #2 needs to be a number",2) end
-        if not (type(Grid) == "table" and Grid.type:match("grid") == "grid") then error("input #3 needs to be a table of type grid",2) end
+        if not (type(Grid) == "table" and Grid.Type:match("grid") == "grid") then error("input #3 needs to be a table of type grid",2) end
         local P = {}
         local Pit = 0
         P.currLightLevel = nil
@@ -39,17 +39,18 @@ function Draw()
                 P[Pit][3] = P.currLightLevel
             end
         end
+        local yPosCorrection = y*PixelSize
         P.currLightLevel = nil
-        if not (P[1][1] == 1 and P[1][2] == 954 and P[1][3] == 0) then
+        -- if not (P[1][1] == 1 and P[1][2] == 954 and P[1][3] == 0) then
             for i,v in ipairs(P) do
                 term.drawPixels(
                     (x+v[1])*PixelSize,
-                    y*PixelSize,
+                    yPosCorrection,
                     v[3],
                     PixelSize*(v[2]),
                     PixelSize
                 )
-            end
+            -- end
         end
         return P
     end
@@ -57,7 +58,7 @@ function Draw()
     local function drawFromArray2D(x, y, Grid) -- Draws Grid onto screen at specified location
         if (type(x) ~= "number") then error("input #1 needs to be a number",2) end
         if (type(y) ~= "number") then error("input #2 needs to be a number",2) end
-        if not (type(Grid) == "table" and Grid.type:match("grid") == "grid") then error("input #3 needs to be a table of type grid",2) end
+        if not (type(Grid) == "table" and Grid.Type:match("grid") == "grid") then error("input #3 needs to be a table of type grid",2) end
         local oT = {} 
         for i, v in ipairs(Grid.grid) do
             oT[i] = drawFromArray1D(x-1,y+i-1,v, Grid)

@@ -5,18 +5,20 @@ dofile("lib/import.lua")
 
 import("linalg")
 import("List")
+import("logger")
 import("tblclean")
 import("grid")
 import("draw")
 import("GUI")
-import("creature")
 
 -- globals
 
+local logger = Logger()
 local Grid = Grid()
 local draw = Draw()
 local gui
 
+import("creature")
 local res = {}
 local tres = {}
 
@@ -26,9 +28,7 @@ local paused = false
 local framesElapsed = 0
 local creatures = List("creature")
 
-local tsum = 0
-local nsum = 0
-local oldtime = 0
+local oldtime
 
 local ui = {
     height = 50
@@ -54,7 +54,7 @@ local function userInput()
 end
 
 local function setVertices()
-    creatures:add(Creature(30,20,Grid,0))
+    creatures:add(Creature(30,20,Grid,0,{logger=logger}))
 end
 
 -- main functions
@@ -64,7 +64,7 @@ local function Init()
     res.x = math.floor(tres.x / draw.PixelSize)
     res.y = math.floor(tres.y / draw.PixelSize)
     Grid.init(res.x,res.y-ui.height)
-    gui = GUI(50,res)
+    gui = GUI(ui.height,res)
     term.clear()
     term.setCursorPos(1,1)
     term.setGraphicsMode(2)
@@ -73,8 +73,8 @@ local function Init()
 end
 
 local function Start()
-    setVertices()
-    oldtime = ccemux.milliTime()
+    -- setVertices()
+    -- oldtime = ccemux.milliTime()
 end
 
 local function PreUpdate() 
@@ -82,19 +82,22 @@ end
 
 
 local function Update()
-    if (framesElapsed % 150 == 0) then
-        creatures:get(1):move(Grid,1,1)
-    end     
+    -- if (framesElapsed % 10 == 0) then
+        -- creatures:get(1):move(Grid,1,1)
+    -- end     
 end
 
 local function Render()
-    local fps = math.floor(1000/(ccemux.milliTime()-oldtime))
-    if (fps ~= math.huge) then
-        gui:displayNum(fps)
-    end
-    oldtime = ccemux.milliTime()
+    -- local fps = math.floor(1000000000/(ccemux.nanoTime()-oldtime))
+    -- if (fps ~= math.huge) then
+    --     gui:displayNum(fps)
+    -- end
+    -- oldtime = ccemux.nanoTime()
     draw.drawFromArray2D(0,0,Grid)
     draw.drawFromArray2D(0,res.y-ui.height+1,gui)
+
+    framesElapsed = framesElapsed + 1;
+    logger:tick()
 end
 
 local function Closing()
@@ -117,7 +120,6 @@ local function main()
         PreUpdate()
         Update()
         Render()
-        framesElapsed = framesElapsed + 1;
         end
         os.queueEvent("")
         os.pullEvent("")
