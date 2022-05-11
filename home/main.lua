@@ -1,8 +1,9 @@
 ---@diagnostic disable: undefined-field
 -- imports
 
-dofile("lib/import.lua")
+require(".lib.import")
 
+import("mathb")
 import("linalg")
 import("List")
 import("logger")
@@ -25,10 +26,11 @@ local tres = {}
 local debugMode = true
 local gameLoop = true
 local paused = false
+local UPS = 165
 local framesElapsed = 0
 local creatures = List("creature")
 
-local oldtime
+local fpsTime, updateTime
 
 local ui = {
     height = 50
@@ -44,7 +46,7 @@ local function userInput()
         
         if key == keys.space then
             paused = not paused
-            if paused then gui:pause() end
+            -- if paused then gui:pause() end
         elseif key == keys.right then
             gameLoop = false
         end
@@ -54,7 +56,7 @@ local function userInput()
 end
 
 local function setVertices()
-    creatures:add(Creature(30,20,Grid,0,{logger=logger}))
+    creatures:add(Creature(30,50,Grid,0,{logger=logger}))
 end
 
 -- main functions
@@ -73,8 +75,9 @@ local function Init()
 end
 
 local function Start()
-    -- setVertices()
-    -- oldtime = ccemux.milliTime()
+    setVertices()
+    fpsTime = ccemux.milliTime()
+    updateTime = fpsTime 
 end
 
 local function PreUpdate() 
@@ -82,17 +85,19 @@ end
 
 
 local function Update()
-    -- if (framesElapsed % 10 == 0) then
-        -- creatures:get(1):move(Grid,1,1)
-    -- end     
+    local dt = (ccemux.milliTime()-updateTime)/1000
+    if (dt > 1/UPS) then
+        creatures:get(1):move(Grid,1,math.sin(framesElapsed*math.pi/360))
+        updateTime = ccemux.milliTime()
+    end 
 end
 
 local function Render()
-    -- local fps = math.floor(1000000000/(ccemux.nanoTime()-oldtime))
-    -- if (fps ~= math.huge) then
-    --     gui:displayNum(fps)
-    -- end
-    -- oldtime = ccemux.nanoTime()
+    local fps = math.floor(1000000000/(ccemux.nanoTime()-fpsTime))
+    if (fps ~= math.huge) then
+        gui:displayNum(fps)
+    end
+    fpsTime = ccemux.nanoTime()
     draw.drawFromArray2D(0,0,Grid)
     draw.drawFromArray2D(0,res.y-ui.height+1,gui)
 

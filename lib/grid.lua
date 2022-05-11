@@ -15,12 +15,18 @@ function Grid()
     end
 
     local function GetlightLevel(X,Y)
-        return grid[Y][X]
+        if (X > 0 and Y > 0 and Y < res.y and X < res.x) then
+            X = math.floor(X)
+            Y = math.floor(Y)
+            return grid[Y][X]
+        end
     end
 
     local function SetlightLevel(X,Y,Value)
         if (X > 0 and Y > 0 and Y < res.y and X < res.x) then
-                grid[Y][X] = Value
+            X = math.floor(X)
+            Y = math.floor(Y)
+            grid[Y][X] = Value
         end
     end
 

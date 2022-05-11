@@ -30,8 +30,6 @@ function GUI(height,res)
 	gui.fill(2,2,res.x-3,height-3,0)
 	-- unpause(gui)
 
-	PlaceNums(gui,res.x-(height/2+6),height/2-6,"1234567890")
-
 	return setmetatable(gui,{
 		__index = {
 			pause=pause,

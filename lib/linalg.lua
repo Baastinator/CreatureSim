@@ -1,12 +1,4 @@
 ---@diagnostic disable: deprecated, lowercase-global
-local round = function(number, digits)
-    digits = digits or 0
-    number = number * (10^digits)
-    number = number + 0.5
-    number = math.floor(number)
-    number = number / (10^digits)
-    return number
-end
 
 local matrix = {
     identity = function(size)
@@ -26,7 +18,7 @@ local matrix = {
                 str = str.."\n"
             end
             for x=1,size.x do
-                local val = round(self:get(x,y),5)
+                local val = Mathb.round(self:get(x,y),5)
                 local placeholder = ""
                 for i=#tostring(val),8 do
                     placeholder = placeholder.." "
@@ -311,7 +303,7 @@ function mat(X,Y)
     if (X == nil and Y == nil) then return setmetatable({},MT) end
     local T = {}
     for i=1,X*Y do T[i] = 0 end
-    T.type = "mat"
+    T.Type = "mat"
     T.xSize = X
     T.ySize = Y
     return setmetatable(T,MT)
@@ -329,6 +321,7 @@ function vec(input,mode)
         error("bad input",2)
     end 
     local v = mat(1,size)
+    v.Type = "mat.vec"
     if (size == 4) then
         v.x = content[1]
         v.y = content[2]
