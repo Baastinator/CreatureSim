@@ -19,6 +19,7 @@ function Grid()
             X = math.floor(X)
             Y = math.floor(Y)
             return grid[Y][X]
+        else return 0
         end
     end
 

@@ -19,26 +19,22 @@ Mathb = {
         number = number / (10^digits)
         return number
     end,        
-    GenInterpolation = function(P1, P2)
+    yInterpolate = function(P1, P2, pos)
         if not (type(P1) == "table" and P1.Type == "mat.vec") then error("input 1 needs to be a vector") end
         if not (type(P2) == "table" and P2.Type == "mat.vec") then error("input 2 needs to be a vector") end
+        if not (type(P2) == "number") then error("input 3 needs to be number",2) end
 
-        local dx = (P2[1]-P1[1])
-        local dy = (P2[2]-P1[2])
-        local base = (function() if dx >= dy then return "x" end return "y" end)()
-        local m = (function() if base == "x" then return dy/dx end return dx/dy end)()
+        local m = (P2[1]-P1[1])/(P2[2]-P1[2])
 
-        local interpolation = function(pos)
-            if base == "x" then
-                return (P1[2] + m * (pos - P1[1]))
-            else
-                return (P1[1] + m * (pos - P1[2]))
-            end
-        end
-        return interpolation
+        return P1[1] + m * (pos - P1[2])
     end,
-    Interpolate = function(P1, P2, pos)
-        local m = (P2[2]-P1[2]) / (P2[1]-P1[1])
+    xInterpolate = function(P1, P2, pos)
+        if not (type(P1) == "table" and P1.Type == "mat.vec") then error("input 1 needs to be a vector") end
+        if not (type(P2) == "table" and P2.Type == "mat.vec") then error("input 2 needs to be a vector") end
+        if not (type(P2) == "number") then error("input 3 needs to be number",2) end
+
+        local m = (P2[2]-P1[2])/(P2[1]-P1[1])
+
         return (P1[2] + m * (pos - P1[1]))
     end
 }

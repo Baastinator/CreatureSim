@@ -73,7 +73,7 @@ function Draw()
         -- 254 creature
         term.setPaletteColor(254, colors.packRGB(0.75,0,0.75))
         -- 255 food
-        term.setPaletteColor(255, colors.packRGB(0,0.5,0))
+        term.setPaletteColor(255, colors.packRGB(0.5,0.5,0.5))
     end
 
     local function resetPalette()
